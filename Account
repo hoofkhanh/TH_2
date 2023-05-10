@@ -1,0 +1,118 @@
+package bai_1;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Account {
+	private double soTien;
+	private int soTk;
+	private String tenTk;
+	private String trangThai;
+	private final double laiXuat = 0.035;
+
+	public Account(double soTien, int soTk, String tenTk) {
+		this.soTien = soTien;
+		this.soTk = soTk;
+		this.tenTk = tenTk;
+	}
+
+	public Account(int sotk, String tenTk) {
+		this.soTien = 50;
+	}
+
+	public Account() {
+		this.soTk = 999999;
+		this.tenTk = "chưa xác định";
+		this.soTien = 50;
+	}
+
+	public double getSoTien() {
+		return soTien;
+	}
+
+	public void setSoTien(double soTien) {
+		if (soTien < 50) {
+			this.trangThai = "không hợp lệ";
+		} else {
+			this.soTien = soTien;
+		}
+	}
+
+	public int getSoTk() {
+		return soTk;
+	}
+
+	public void setSoTk(int soTk) {
+		if (soTk <= 0 || soTk == 999999) {
+			this.trangThai = "không hợp lệ";
+		} else {
+			this.soTk = soTk;
+		}
+	}
+
+	public String getTenTk() {
+		return tenTk;
+	}
+
+	public void setTenTk(String tenTk) {
+		if (tenTk.equals("")) {
+			this.trangThai = "không hợp lệ";
+		} else {
+			this.tenTk = tenTk;
+		}
+	}
+
+	public String getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(String trangThai) {
+		this.trangThai = trangThai;
+	}
+
+	@Override
+	public String toString() {
+		Locale lc = new Locale("vi", "VN");
+		NumberFormat nf = NumberFormat.getCurrencyInstance(lc);
+		String soTien = nf.format(this.soTien);
+
+		return "Account [ soTk=" + soTk + ", tenTk=" + tenTk + "soTien=" + soTien + ", trangThai=" + trangThai + "]";
+	}
+
+	public void napTien(double soTienNap) {
+		if (soTienNap <= 0) {
+			System.out.println("không thành công");
+		} else {
+			this.soTien += soTienNap;
+		}
+	}
+
+	public void rutTien(double soTienRut) {
+		if (soTienRut <= 0 || soTienRut > this.soTien -50) {
+			System.out.println("không thành công");
+		} else {
+			this.soTien -= soTienRut;
+		}
+	}
+
+	public void chuyenKhoang(Account a1, Account a2, double soTienChuyen) {
+		a1.rutTien(soTienChuyen);
+		a2.napTien(soTienChuyen);
+	}
+	
+	public void daoHan(){
+		this.soTien= this.soTien + this.soTien * this.laiXuat;
+	}
+	
+	public void nhap() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Nhập số tài khoản");
+		this.setSoTk(sc.nextInt());
+		sc.nextLine();
+		System.out.println("Nhập tên tài khoản");
+		this.setTenTk(sc.nextLine());
+		System.out.println("nhập số tiền muốn nạp");
+		this.setSoTien(sc.nextDouble());
+	}
+}
